@@ -3,7 +3,7 @@ class Office::WelcomeController < Office::BaseController
   end
 
   def list
-    render json: { list: Client.all.map{|c| { full_name: c.full_name, email: c.email , phone: c.phone, id: c.id}}}, status: 200
+    @clients = Client.all
   end
 
   def current_staff_email

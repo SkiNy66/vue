@@ -18,7 +18,7 @@
   import navbar from 'app/components/navbar.vue'
   import dashboard from 'app/components/dashboard.vue'
   import logoImage from 'images/logo.jpg';
-  import { getClientsList, getCurrentStaffEmail, postNewClient } from 'app/api/api.js'
+  import { getClientsList, getCurrentStaffEmail, postNewClient } from 'app/api/'
 
   export default {
     data: function () {
@@ -38,7 +38,7 @@
     created() {
       getClientsList()
         .then((response) => {
-          this.list = response.data['list'];
+          this.list = response.data;
         })
         .catch((error) => {
           this.error = true;
@@ -57,7 +57,7 @@
           .then((response) => {
             getClientsList()
               .then((response) => {
-                this.list = response.data['list'];
+                this.list = response.data;
               })
               .catch((error) => {
                 this.error = true;
