@@ -1,24 +1,28 @@
-<template>
-  <div v-if="loading">
-    <p>Загрузка</p>
-  </div>
-  <div v-else id="app">
-    <div v-if="error">
-      <p>Ошибка</p>
-    </div>
-    <div v-else>
-      <p>{{ message }}</p>
-      <navbar :current_email="current_email" :logoImage="logoImage"></navbar>
-      <dashboard :list='list' @addNewClient="addNewClient"></dashboard>
-    </div>
-  </div>
+<template lang='pug'>
+  q-layout(view="hHh lpR fFf")
+    staffNavbar(:current_email="current_email" :logoImage="logoImage")
+
+    q-page-container
+      div(v-if="loading")
+        q-spinner(color="primary" size="3em" :thickness="10")
+      div(v-else id="app")
+        div(v-if="error")
+          p Ошибка
+        div(v-else)
+          organizationDashboard(:organizationsList='organizationsList' @postNewOrganization="postNewOrganization" @deleteOrganization="deleteOrganization")
 </template>
 
 <script>
-  import navbar from 'app/components/navbar.vue'
+  import staffNavbar from 'app/components/staffNavbar.vue'
   import dashboard from 'app/components/dashboard.vue'
-  import logoImage from 'images/logo.jpg';
-  import { getClientsList, getCurrentStaffEmail, postNewClient } from 'app/api/'
+  import organizationDashboard from 'app/components/organizationDashboard.vue'
+  import logoImage from 'images/logo.jpg'
+  import { getClientsList,
+           getCurrentStaffEmail,
+           postNewClient,
+           getOrganizationsList,
+           postNewOrganization,
+           deleteOrganization } from 'app/api/'
 
   export default {
     data: function () {
@@ -28,17 +32,23 @@
         error: false,
         current_email: '',
         list: [],
+        organizationsList: [],
         logoImage
       }
     },
     components: {
-      navbar,
-      dashboard
+      staffNavbar,
+      dashboard,
+      organizationDashboard
     },
     created() {
-      getClientsList()
+      getCurrentStaffEmail() 
         .then((response) => {
-          this.list = response.data;
+          this.current_email = response.data['staff_email'];
+        })
+      getOrganizationsList()
+        .then((response) => {
+          this.organizationsList = response.data;
         })
         .catch((error) => {
           this.error = true;
@@ -46,18 +56,32 @@
         .finally(() => {
           this.loading = false;
         });
-      getCurrentStaffEmail() 
-        .then((response) => {
-          this.current_email = response.data['staff_email'];
-        })
     },
     methods: {
-      addNewClient: function(clientCredentials) {
-        postNewClient(clientCredentials)
+      postNewOrganization: function(organizationCredentials) {
+        postNewOrganization(organizationCredentials)
           .then((response) => {
-            getClientsList()
+            getOrganizationsList()
               .then((response) => {
-                this.list = response.data;
+                this.organizationsList = response.data;
+              })
+              .catch((error) => {
+                this.error = true;
+              })
+              .finally(() => {
+                this.loading = false;
+              });
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      },
+      deleteOrganization: function(organization_id) {
+        deleteOrganization(organization_id)
+          .then((response) => {
+            getOrganizationsList()
+              .then((response) => {
+                this.organizationsList = response.data;
               })
               .catch((error) => {
                 this.error = true;
