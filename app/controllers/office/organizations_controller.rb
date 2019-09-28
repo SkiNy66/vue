@@ -5,11 +5,7 @@ class Office::OrganizationsController < Office::BaseController
 
   def create
     @organization = Organization.new(organization_params)
-    if @organization.save!
-      render json: { result: "Success" }, status: 200
-    else
-      render json: { result: "Error" }, status: 422
-    end
+    @organization.save!
   end
 
   def destroy

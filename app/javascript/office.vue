@@ -1,6 +1,6 @@
 <template lang='pug'>
   q-layout(view="hHh lpR fFf")
-    navbar(:current_email="current_email" :logoImage="logoImage")
+    staffNavbar(:current_email="current_email" :logoImage="logoImage")
 
     q-page-container
       div(v-if="loading")
@@ -10,11 +10,10 @@
           p Ошибка
         div(v-else)
           organizationDashboard(:organizationsList='organizationsList' @postNewOrganization="postNewOrganization" @deleteOrganization="deleteOrganization")
-          <!-- dashboard(:list='list' @addNewClient="addNewClient") -->
 </template>
 
 <script>
-  import navbar from 'app/components/navbar.vue'
+  import staffNavbar from 'app/components/staffNavbar.vue'
   import dashboard from 'app/components/dashboard.vue'
   import organizationDashboard from 'app/components/organizationDashboard.vue'
   import logoImage from 'images/logo.jpg'
@@ -38,21 +37,11 @@
       }
     },
     components: {
-      navbar,
+      staffNavbar,
       dashboard,
       organizationDashboard
     },
     created() {
-      // getClientsList()
-      //   .then((response) => {
-      //     this.list = response.data;
-      //   })
-      //   .catch((error) => {
-      //     this.error = true;
-      //   })
-      //   .finally(() => {
-      //     this.loading = false;
-      //   });
       getCurrentStaffEmail() 
         .then((response) => {
           this.current_email = response.data['staff_email'];
@@ -69,24 +58,6 @@
         });
     },
     methods: {
-      // addNewClient: function(clientCredentials) {
-      //   postNewClient(clientCredentials)
-      //     .then((response) => {
-      //       getClientsList()
-      //         .then((response) => {
-      //           this.list = response.data;
-      //         })
-      //         .catch((error) => {
-      //           this.error = true;
-      //         })
-      //         .finally(() => {
-      //           this.loading = false;
-      //         });
-      //     })
-      //     .catch((error) => {
-      //       console.log(error)
-      //     })
-      // }
       postNewOrganization: function(organizationCredentials) {
         postNewOrganization(organizationCredentials)
           .then((response) => {

@@ -4,15 +4,13 @@
     p(v-if="errors.length")
       b Пожалуйста исправьте указанные ошибки:
       ul
-        <li v-for="error in errors">{{ error }}</li>
-    <label><input type="text" name="" value="" v-model="title">Title</label>
-    br
-    <label><input type="text" name="" value="" v-model="kind">kind</label>
-    br
-    <label><input type="text" name="" value="" v-model="iin">iin</label>
-    br
-    <label><input type="text" name="" value="" v-model="ogrn">ogrn</label>
-    br
+        li(v-for='error in errors') {{ error }}
+    .q-pa-md
+      .q-gutter-md(style='max-width: 300px')
+        q-input(v-model='organization.title' label='Title')
+        q-input(v-model='organization.kind' label='kind')
+        q-input(v-model='organization.iin' label='iin')
+        q-input(v-model='organization.ogrn' label='ogrn')
     q-btn(push color="primary" @click="postNewOrganization" label="Add organization")
     organizationList(:organizationsList="organizationsList", @deleteOrganization="deleteOrganization")
 </template>
@@ -23,10 +21,12 @@
   export default {
     data: function () {
       return {
-        title: '',
-        kind: '',
-        iin: '',
-        ogrn: '',
+        organization: {
+          title: '',
+          kind: '',
+          iin: '',
+          ogrn: ''
+        },
         errors: []
       }
     },
@@ -34,26 +34,26 @@
     methods: {
       postNewOrganization: function() {
         if (this.checkForm()) {
-          this.$emit('postNewOrganization', {title: this.title, kind: this.kind, iin: this.iin, ogrn: this.ogrn} )
-          this.title = ''
-          this.kind = ''
-          this.iin = ''
-          this.ogrn = ''
+          this.$emit('postNewOrganization', {title: this.organization.title, kind: this.organization.kind, iin: this.organization.iin, ogrn: this.organization.ogrn} )
+          this.organization.title = ''
+          this.organization.kind = ''
+          this.organization.iin = ''
+          this.organization.ogrn = ''
         }
       },
       checkForm: function (e) {
         this.errors = [];
 
-        if (this.title.length < 1) {
+        if (this.organization.title.length < 1) {
           this.errors.push('Title не должен быть пустым');
         }
-        if (this.kind.length < 1) {
+        if (this.organization.kind.length < 1) {
           this.errors.push('kind не должен быть пустым');
         }
-        if (this.iin.length < 1) {
+        if (this.organization.iin.length < 1) {
           this.errors.push('iin не должен быть пустым');
         }
-        if (this.ogrn.length < 1) {
+        if (this.organization.ogrn.length < 1) {
           this.errors.push('ogrn не должен быть пустым');
         }
 

@@ -5,8 +5,8 @@
         q-avatar
           img(:src="logoImage")
         | Staff Navbar
-      <p>{{ current_email }}</p>
-      <a href="/staffs/sign_out" data-method="delete">Log Out</a>
+      p {{ current_email }}
+      a(href='/staffs/sign_out' data-method='delete') Log Out
 </template>
 
 <script>
