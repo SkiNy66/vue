@@ -4,6 +4,8 @@ import Rails from 'rails-ujs';
 axios.defaults.headers.post["Content-Type"] = "application/json"
 axios.defaults.headers.post["X-CSRF-Token"] = Rails.csrfToken()
 
+axios.defaults.headers.delete["X-CSRF-Token"] = Rails.csrfToken()
+
 export function getClientsList() {
   return axios.get('/office/list')
 }
@@ -25,6 +27,5 @@ export function postNewOrganization(organization_credentials) {
 }
 
 export function deleteOrganization(organization_id) {
-  console.log(organization_id)
   return axios.delete('/office/organizations/' + organization_id)
 }

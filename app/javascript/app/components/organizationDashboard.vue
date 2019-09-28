@@ -62,7 +62,7 @@
         }
       },
       deleteOrganization: function(org_id) {
-        this.$emit('deleteOrganization', {id: org_id} )
+        this.$emit('deleteOrganization', org_id )
       }
     },
     components: {
