@@ -24,7 +24,8 @@ import {
    QToolbar,
    QToolbarTitle,
    QAvatar,
-   QSpinner
+   QSpinner,
+   QTable
  } from 'quasar'
  
 Vue.use(Quasar, {
@@ -39,7 +40,8 @@ Vue.use(Quasar, {
      QToolbar,
      QToolbarTitle,
      QAvatar,
-     QSpinner
+     QSpinner,
+     QTable
    },
    directives: {
    },
