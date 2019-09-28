@@ -1,18 +1,53 @@
-<template>
-  <div v-if="loading">
-    <p>Загрузка</p>
-  </div>
-  <div v-else id="app">
-    <div v-if="error">
-      <p>Ошибка</p>
-    </div>
-    <div v-else>
-      <p>{{ message }}</p>
-      <navbar :current_email="current_email" :logoImage="logoImage"></navbar>
+<!-- <template lang='pug'>
+  div(v-if="loading")
+    p Загрузка
+  div(v-else id="app")
+    div(v-if="error")
+      p Ошибка
+    div(v-else)
+      q-layout
+        q-page-container
+          navbar(:current_email="current_email" :logoImage="logoImage")
+
+
+      
       <dashboard :list='list' @addNewClient="addNewClient"></dashboard>
-    </div>
-  </div>
+</template> -->
+
+<template lang='pug'>
+  q-layout(view="hHh lpR fFf")
+    navbar(:current_email="current_email" :logoImage="logoImage")
+    
+    q-page-container
+      div(v-if="loading")
+        q-spinner(color="primary" size="3em" :thickness="10")
+      div(v-else id="app")
+        div(v-if="error")
+          p Ошибка
+        div(v-else)
+          <!-- <dashboard :list='list' @addNewClient="addNewClient"></dashboard> -->
 </template>
+
+<!-- <template>
+  <q-layout view="hHh lpR fFf">
+
+    <q-header elevated class="bg-primary text-white">
+      <q-toolbar>
+        <q-toolbar-title>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
+          </q-avatar>
+          Title
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-header>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+
+  </q-layout>
+</template> -->
 
 <script>
   import navbar from 'app/components/navbar.vue'

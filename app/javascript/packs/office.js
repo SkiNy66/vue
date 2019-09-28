@@ -19,25 +19,34 @@ import {
    QHeader,
    QDrawer,
    QPageContainer,
-   QPage
+   QPage,
+   QBtn,
+   QToolbar,
+   QToolbarTitle,
+   QAvatar,
+   QSpinner
  } from 'quasar'
  
-Vue.use(Quasar, {})
-// (Quasar, {
-   // config: {},
-   // components: {
-   //   QLayout,
-   //   QHeader,
-   //   QDrawer,
-   //   QPageContainer,
-   //   QPage
-   // },
-   // directives: {
-   // },
-   // iconSet: iconSet,
-   // plugins: {
-   // }
-// })
+Vue.use(Quasar, {
+   config: {},
+   components: {
+     QLayout,
+     QHeader,
+     QDrawer,
+     QPageContainer,
+     QPage,
+     QBtn,
+     QToolbar,
+     QToolbarTitle,
+     QAvatar,
+     QSpinner
+   },
+   directives: {
+   },
+   iconSet: iconSet,
+   plugins: {
+   }
+})
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({

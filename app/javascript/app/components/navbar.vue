@@ -1,20 +1,12 @@
-<template>
-  <div id="navbar">
-    <h4>Navbar</h4>
-    <table>
-      <tr>
-        <td>
-          <img :src="logoImage">
-        </td>
-        <td>
-          <p>{{ current_email }}</p>
-        </td>
-        <td>
-          <a href="/staffs/sign_out" data-method="delete">Log Out</a>
-        </td>
-      </tr>
-    </table>
-  </div>
+<template lang='pug'>
+  q-header(elevated class="bg-primary text-white")
+    q-toolbar
+      q-toolbar-title
+        q-avatar
+          img(:src="logoImage")
+        | Staff Navbar
+      <p>{{ current_email }}</p>
+      <a href="/staffs/sign_out" data-method="delete">Log Out</a>
 </template>
 
 <script>
