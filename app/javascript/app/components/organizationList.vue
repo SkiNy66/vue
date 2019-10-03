@@ -1,11 +1,15 @@
 <template lang='pug'>
-  div(id="clientList" class="q-pa-md")
+  div(id="organizationList" class="q-pa-md")
     q-table(title="Organizations" :data="organizationsList" :columns="columns" row-key="id" dark color="amber" selection="single"
       :selected.sync="selected")
-    q-btn(push color="red" @click="deleteOrganization" label="Remove organization")
+    div(v-if="(this.selected.length > 0)")
+      organizationEdit(:selected_organization='selected' @update_organization_clicked='updateOrganization')
+      q-btn(push color="red" @click="deleteOrganization" label="Remove organization")
 </template>
 
 <script>
+  import organizationEdit from 'app/components/organizationEdit.vue'
+
   export default {
     props: ['organizationsList'],
     data () {
@@ -23,7 +27,13 @@
     methods:{
       deleteOrganization: function() {
         this.$emit('deleteOrganization', this.selected[0].id )
+      },
+      updateOrganization: function(organization) {
+        this.$emit('updateOrganization', organization)
       }
+    },
+    components: {
+      organizationEdit
     }
   }
 </script>

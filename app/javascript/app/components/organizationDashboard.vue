@@ -12,11 +12,16 @@
         q-input(v-model='organization.iin' label='iin')
         q-input(v-model='organization.ogrn' label='ogrn')
     q-btn(push color="primary" @click="postNewOrganization" label="Add organization")
-    organizationList(:organizationsList="organizationsList", @deleteOrganization="deleteOrganization")
+    organizationList(:organizationsList="organizationsList", @deleteOrganization="deleteOrganization" @updateOrganization='postEditOrganization')
 </template>
 
 <script>
   import organizationList from 'app/components/organizationList.vue'
+  import { getOrganizationsList,
+           postNewOrganization,
+           postEditOrganization,
+           deleteOrganization
+         } from 'app/api/'
 
   export default {
     data: function () {
@@ -27,19 +32,49 @@
           iin: '',
           ogrn: ''
         },
+        organizationsList: [],
         errors: []
       }
     },
-    props: ['organizationsList'],
+    created() {
+      this.getUpdatedOrganizationsList()
+    },
     methods: {
+      getUpdatedOrganizationsList: function() {
+        getOrganizationsList()
+          .then((response) => {
+            this.organizationsList = response.data;
+          })
+          .catch((error) => {
+            this.error = true;
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      },
       postNewOrganization: function() {
         if (this.checkForm()) {
-          this.$emit('postNewOrganization', {title: this.organization.title, kind: this.organization.kind, iin: this.organization.iin, ogrn: this.organization.ogrn} )
+          postNewOrganization(this.organization)
+            .then((response) => {
+              this.getUpdatedOrganizationsList()
+            })
+            .catch((error) => {
+              console.log(error)
+            })
           this.organization.title = ''
           this.organization.kind = ''
           this.organization.iin = ''
           this.organization.ogrn = ''
         }
+      },
+      postEditOrganization: function(organization) {
+        postEditOrganization(organization)
+          .then((response) => {
+            this.getUpdatedOrganizationsList()
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       },
       checkForm: function (e) {
         this.errors = [];
@@ -61,8 +96,14 @@
           return true;
         }
       },
-      deleteOrganization: function(org_id) {
-        this.$emit('deleteOrganization', org_id )
+      deleteOrganization: function(organization_id) {
+        deleteOrganization(organization_id)
+          .then((response) => {
+            this.getUpdatedOrganizationsList()
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       }
     },
     components: {
