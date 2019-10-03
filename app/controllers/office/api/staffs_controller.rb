@@ -39,17 +39,10 @@ class Office::Api::StaffsController < Office::BaseController
   end
 
   def link_client_with_organization
-    puts '+++++++++++++'
     client = Client.find_by_id(params[:link][:client_id])
     organization = Organization.find_by_id(params[:link][:organization_id])
     if client && organization
       client.organizations << organization
-      puts '-----------'
-      puts '-----------'
-      puts client
-      puts organization
-      puts '-----------'
-      puts '-----------'
       render json: { result: "Success" }, status: 200
     else
       render json: { result: "Error" }, status: 422
