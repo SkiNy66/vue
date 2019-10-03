@@ -4,4 +4,5 @@ json.array! @organizations do |organization|
   json.kind organization[:kind]
   json.iin organization[:iin]
   json.ogrn organization[:ogrn]
+  json.hardware_id organization[:hardware_id]
 end 

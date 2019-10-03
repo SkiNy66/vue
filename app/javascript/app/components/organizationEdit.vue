@@ -12,6 +12,13 @@
               q-input(v-model='selected_organization[0].kind' label='kind')
               q-input(v-model='selected_organization[0].iin' label='iin')
               q-input(v-model='selected_organization[0].ogrn' label='ogrn')
+              q-select(
+                filled
+                v-model="selected_organization[0].hardware_id"
+                :options="hardwareOptions"
+                label="Hardware"
+                style="width: 250px"
+                emit-value)
           q-btn(push color="primary" @click="clickUpdateButton" label="Update organization")
         q-card-actions.text-primary(align='right')
           q-btn(flat='' label='Close' v-close-popup='')
@@ -26,7 +33,7 @@
         inception: false
       }
     },
-    props: ['selected_organization'],
+    props: ['selected_organization', 'hardwareOptions'],
     methods:{
       clickUpdateButton: function() {
         this.$emit('update_organization_clicked', this.selected_organization[0])

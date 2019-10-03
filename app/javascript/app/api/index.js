@@ -26,10 +26,6 @@ export function postResetPasswordClient(client_id) {
   return axios.post('/office/api/clients/' + client_id + '/reset_password')
 }
 
-export function getStaff() {
-  return axios.get('/office/api/staff')
-}
-
 export function getStaffsList() {
   return axios.get('/office/api/staffs')
 }
@@ -60,4 +56,12 @@ export function postEditOrganization(organization_credentials) {
 
 export function deleteOrganization(organization_id) {
   return axios.delete('/office/api/organizations/' + organization_id)
+}
+
+export function getHardwaresList() {
+  return axios.get('/office/api/hardwares')
+}
+
+export function postClientOrganizationLink(link_params) {
+  return axios.post('/office/api/staffs/link_client_with_organization', { link: link_params})
 }
