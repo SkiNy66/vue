@@ -1,4 +1,4 @@
 class Organization < ApplicationRecord
   has_and_belongs_to_many :clients
-  belongs_to :hardware
+  has_many :hardwares
 end

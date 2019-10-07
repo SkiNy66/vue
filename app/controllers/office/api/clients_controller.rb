@@ -41,6 +41,6 @@ class Office::Api::ClientsController < Office::BaseController
   private
 
   def client_params
-    params.require(:client).permit(:full_name, :phone, :email)
+    params.require(:client).permit!.except(:__index)
   end
 end

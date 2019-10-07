@@ -3,7 +3,7 @@
     q-table(title="Organizations" :data="organizationsList" :columns="columns" row-key="id" dark color="amber" selection="single"
       :selected.sync="selected")
     div(v-if="(this.selected.length > 0)")
-      organizationEdit(:selected_organization='selected' @update_organization_clicked='updateOrganization', :hardwareOptions='hardwareOptions')
+      organizationEdit(:selected_organization='selected' @update_organization_clicked='updateOrganization', :clientsOptions='clientsOptions')
       q-btn(push color="red" @click="deleteOrganization" label="Remove organization")
 </template>
 
@@ -11,7 +11,7 @@
   import organizationEdit from 'app/components/organizationEdit.vue'
 
   export default {
-    props: ['organizationsList', 'hardwareOptions'],
+    props: ['organizationsList', 'clientsOptions'],
     data () {
       return {
         columns: [
@@ -20,7 +20,7 @@
           { name: 'kind', label: 'KIND', field: 'kind', sortable: true },
           { name: 'iin', label: 'IIN', field: 'iin' },
           { name: 'ogrn', label: 'OGRN', field: 'ogrn' },
-          { name: 'hardware_id', label: 'Hardware', field: 'hardware_id' }
+          { name: 'client_ids', label: 'Client ids', field: 'client_ids' }
         ],
         selected: []
       }

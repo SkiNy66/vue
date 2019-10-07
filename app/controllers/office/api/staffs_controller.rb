@@ -38,24 +38,9 @@ class Office::Api::StaffsController < Office::BaseController
     end
   end
 
-  def link_client_with_organization
-    client = Client.find_by_id(params[:link][:client_id])
-    organization = Organization.find_by_id(params[:link][:organization_id])
-    if client && organization
-      client.organizations << organization
-      render json: { result: "Success" }, status: 200
-    else
-      render json: { result: "Error" }, status: 422
-    end
-  end
-
   private
 
   def staff_params
     params.require(:staff).permit!
-  end
-
-  def link_params
-    params.require(:link).permit(:organization_id, :client_id)
   end
 end

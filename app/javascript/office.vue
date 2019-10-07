@@ -13,6 +13,9 @@
         q-item(clickable :to={ name: 'Staffs' })
           q-item-label Staffs
 
+        q-item(clickable :to={ name: 'Hardwares' })
+          q-item-label Hardwares
+
     q-page-container
       div(v-if="loading")
         q-spinner(color="primary" size="3em" :thickness="10")

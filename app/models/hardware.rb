@@ -1,3 +1,3 @@
 class Hardware < ApplicationRecord
-  has_many :organizations
+  belongs_to :organization
 end

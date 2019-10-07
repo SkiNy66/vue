@@ -10,15 +10,25 @@
         q-input(v-model='client.full_name' label='Full name')
         q-input(v-model='client.phone' label='Phone')
         q-input(v-model='client.email' label='email')
+      b Organizations
+        q-select(
+                filled
+                v-model="client.organization_ids"
+                :options="organizationsOptions"
+                multiple
+                label="Organizations"
+                style="width: 250px"
+                emit-value)
     q-btn(push color="primary" @click="postNewClient" label="Add client")
-    clientList(:clientsList="clientsList" @updateClient='postEditClient')
+    clientList(:clientsList="clientsList" @updateClient='postEditClient', :organizationsOptions='organizationsOptions')
 </template>
 
 <script>
   import clientList from 'app/components/clientList.vue'
   import { getClientsList,
            postNewClient,
-           postEditClient
+           postEditClient,
+           getOrganizationsList
          } from 'app/api/'
 
   export default {
@@ -27,14 +37,26 @@
         client: {
           full_name: '',
           phone: '',
-          email: ''
+          email: '',
+          organization_ids: []
         },
         clientsList: [],
-        errors: []
+        errors: [],
+        organizationsOptions: []
       }
     },
     created() {
       this.getUpdatedClientsList()
+      getOrganizationsList()
+        .then((response) => {
+          this.organizationsOptions = this.makeOrganizationsOptionList(response.data);
+        })
+        .catch((error) => {
+          this.error = true;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     methods: {
       getUpdatedClientsList: function() {
@@ -61,6 +83,7 @@
           this.client.full_name = ''
           this.client.phone = ''
           this.client.email = ''
+          this.client.organization_ids = []
         }
       },
       postEditClient: function(staff) {
@@ -95,7 +118,17 @@
       validEmail: function (email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
-      }
+      },
+      makeOrganizationsOptionList: function(organizations) {
+        var options_list = organizations.map(function(h) {
+          var test = {}
+          test['value'] = h['id']
+          test['label'] = h['title']
+          return test;
+        });
+
+        return options_list
+      },
     },
     components: {
       clientList

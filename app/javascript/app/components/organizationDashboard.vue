@@ -11,15 +11,25 @@
         q-input(v-model='organization.kind' label='kind')
         q-input(v-model='organization.iin' label='iin')
         q-input(v-model='organization.ogrn' label='ogrn')
+      b Clients
+        q-select(
+                filled
+                v-model="organization.client_ids"
+                :options="clientsOptions"
+                multiple
+                label="Clients"
+                style="width: 250px"
+                emit-value)
+      <!-- b Hardwares
         q-select(
                 filled
                 v-model="organization.hardware_id"
                 :options="hardwareOptions"
                 label="Hardware"
                 style="width: 250px"
-                emit-value)
+                emit-value) -->
     q-btn(push color="primary" @click="postNewOrganization" label="Add organization")
-    organizationList(:organizationsList="organizationsList", @deleteOrganization="deleteOrganization" @updateOrganization='postEditOrganization', :hardwareOptions='hardwareOptions')
+    organizationList(:organizationsList="organizationsList", @deleteOrganization="deleteOrganization" @updateOrganization='postEditOrganization', :clientsOptions='clientsOptions')
 </template>
 
 <script>
@@ -28,7 +38,8 @@
            postNewOrganization,
            postEditOrganization,
            deleteOrganization,
-           getHardwaresList
+           getHardwaresList,
+           getClientsList
          } from 'app/api/'
 
   export default {
@@ -39,9 +50,10 @@
           kind: '',
           iin: '',
           ogrn: '',
-          hardware_id: '',
+          client_ids: []
         },
         organizationsList: [],
+        clientsOptions: [],
         errors: [],
         hardwareOptions: []
       }
@@ -50,14 +62,24 @@
       this.getUpdatedOrganizationsList();
       getHardwaresList()
         .then((response) => {
-            this.hardwareOptions = this.makeHardwareOptionList(response.data);
-          })
-          .catch((error) => {
-            this.error = true;
-          })
-          .finally(() => {
-            this.loading = false;
-          });
+          this.hardwareOptions = this.makeHardwareOptionList(response.data);
+        })
+        .catch((error) => {
+          this.error = true;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+      getClientsList()
+        .then((response) => {
+          this.clientsOptions = this.makeClientsOptionList(response.data);
+        })
+        .catch((error) => {
+          this.error = true;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     methods: {
       getUpdatedOrganizationsList: function() {
@@ -85,6 +107,7 @@
           this.organization.kind = ''
           this.organization.iin = ''
           this.organization.ogrn = ''
+          this.organization.client_ids = ''
         }
       },
       postEditOrganization: function(organization) {
@@ -130,6 +153,16 @@
           var test = {}
           test['value'] = h['id']
           test['label'] = h['title']
+          return test;
+        });
+
+        return options_list
+      },
+      makeClientsOptionList: function(clients) {
+        var options_list = clients.map(function(h) {
+          var test = {}
+          test['value'] = h['id']
+          test['label'] = h['email']
           return test;
         });
 

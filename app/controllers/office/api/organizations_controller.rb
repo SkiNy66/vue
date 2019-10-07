@@ -29,6 +29,6 @@ class Office::Api::OrganizationsController < Office::BaseController
   private
 
   def organization_params
-    params.require(:organization).permit(:title, :kind, :iin, :ogrn, :hardware_id)
+    params.require(:organization).permit!.except(:__index)
   end
 end

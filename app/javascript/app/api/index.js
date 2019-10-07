@@ -62,6 +62,11 @@ export function getHardwaresList() {
   return axios.get('/office/api/hardwares')
 }
 
-export function postClientOrganizationLink(link_params) {
-  return axios.post('/office/api/staffs/link_client_with_organization', { link: link_params})
+export function postNewHardware(hardware_credentials) {
+  return axios.post('/office/api/hardwares', { hardware: {...hardware_credentials} })
 }
+
+export function postEditHardware(hardware_credentials) {
+  return axios.patch('/office/api/hardwares/' + hardware_credentials.id, { hardware: { ...hardware_credentials }})
+}
+

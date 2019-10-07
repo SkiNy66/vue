@@ -14,9 +14,10 @@
               q-input(v-model='selected_organization[0].ogrn' label='ogrn')
               q-select(
                 filled
-                v-model="selected_organization[0].hardware_id"
-                :options="hardwareOptions"
-                label="Hardware"
+                v-model="selected_organization[0].client_ids"
+                :options="clientsOptions"
+                label="Clients"
+                multiple
                 style="width: 250px"
                 emit-value)
           q-btn(push color="primary" @click="clickUpdateButton" label="Update organization")
@@ -33,7 +34,7 @@
         inception: false
       }
     },
-    props: ['selected_organization', 'hardwareOptions'],
+    props: ['selected_organization', 'clientsOptions'],
     methods:{
       clickUpdateButton: function() {
         this.$emit('update_organization_clicked', this.selected_organization[0])

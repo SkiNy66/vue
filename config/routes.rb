@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       resources :staffs, only: [:index, :update, :create] do
         collection do
           get 'current_staff_email'
-          post 'link_client_with_organization'
+          # post 'link_client_with_organization'
         end
         member do
           post 'reset_password'
@@ -27,7 +27,7 @@ Rails.application.routes.draw do
           post 'reset_password'
         end
       end
-      resources :hardwares, only: [:index]
+      resources :hardwares, only: [:index, :update, :create, :destroy]
     end
     
     get '/*slug', to: "welcome#index"
