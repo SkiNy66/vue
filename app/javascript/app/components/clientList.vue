@@ -1,24 +1,36 @@
-<template>
-  <div id="clientList">
-    <table>
-      <tr>
-        <td>
-          <p>{{ full_name }}</p>
-        </td>
-        <td>
-          <p>{{ email }}</p>
-        </td>
-        <td>
-          <p>{{ phone }}</p>
-        </td>
-      </tr>
-    </table>
-  </div>
+<template lang='pug'>
+  div(id="clientList" class="q-pa-md")
+    q-table(title="Clients" :data="clientsList" :columns="columns" row-key="id" dark color="amber" selection="single"
+      :selected.sync="selected")
+    div(v-if="(this.selected.length > 0)")
+      clientEdit(:selected_client='selected' @update_client_clicked='updateClient', :organizationsOptions='organizationsOptions')
 </template>
 
 <script>
+  import clientEdit from 'app/components/clientEdit.vue'
+
   export default {
-    props: ['full_name', 'email', 'phone']
+    props: ['clientsList', 'organizationsOptions'],
+    data () {
+      return {
+        columns: [
+          { name: 'id', label: 'ID', field: 'id' },
+          { name: 'full_name', align: 'left', label: 'Full name', field: 'full_name', sortable: true },
+          { name: 'email', label: 'e-mail', field: 'email', sortable: true },
+          { name: 'phone', label: 'Phone', field: 'phone' },
+          { name: 'organization_ids', label: 'Organization ids', field: 'organization_ids' }
+        ],
+        selected: []
+      }
+    },
+    methods:{
+      updateClient: function(client) {
+        this.$emit('updateClient', client)
+      }
+    },
+    components: {
+      clientEdit
+    }
   }
 </script>
 

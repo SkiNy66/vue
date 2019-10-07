@@ -10,10 +10,28 @@ Rails.application.routes.draw do
 
   namespace :office do
     root to: "welcome#index"
-    get 'list', to: 'welcome#list'
-    get 'current_staff_email', to: 'welcome#current_staff_email'
-    post 'create_new_client', to: 'welcome#create_new_client'
-
-    resources :organizations, only: [:index, :create, :destroy]
+    
+    namespace :api do
+      resources :organizations, only: [:index, :create, :update, :destroy]
+      resources :staffs, only: [:index, :update, :create] do
+        collection do
+          get 'current_staff_email'
+          # post 'link_client_with_organization'
+        end
+        member do
+          post 'reset_password'
+        end
+      end
+      resources :clients, only: [:index, :update, :create] do
+        member do
+          post 'reset_password'
+        end
+      end
+      resources :hardwares, only: [:index, :update, :create, :destroy]
+    end
+    
+    get '/*slug', to: "welcome#index"
   end
+
+  get '/*slug', to: "welcome#index"
 end

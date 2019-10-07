@@ -2,6 +2,20 @@
   q-layout(view="hHh lpR fFf")
     staffNavbar(:current_email="current_email" :logoImage="logoImage")
 
+    q-drawer(show-if-above bordered)
+      q-list(bordered separator)
+        q-item(clickable :to={ name: 'Organizations' })
+          q-item-section Organizations
+
+        q-item(clickable :to={ name: 'Clients' })
+          q-item-label Clients
+
+        q-item(clickable :to={ name: 'Staffs' })
+          q-item-label Staffs
+
+        q-item(clickable :to={ name: 'Hardwares' })
+          q-item-label Hardwares
+
     q-page-container
       div(v-if="loading")
         q-spinner(color="primary" size="3em" :thickness="10")
@@ -9,46 +23,31 @@
         div(v-if="error")
           p Ошибка
         div(v-else)
-          organizationDashboard(:organizationsList='organizationsList' @postNewOrganization="postNewOrganization" @deleteOrganization="deleteOrganization")
+          router-view
 </template>
 
 <script>
   import staffNavbar from 'app/components/staffNavbar.vue'
-  import dashboard from 'app/components/dashboard.vue'
-  import organizationDashboard from 'app/components/organizationDashboard.vue'
   import logoImage from 'images/logo.jpg'
-  import { getClientsList,
-           getCurrentStaffEmail,
-           postNewClient,
-           getOrganizationsList,
-           postNewOrganization,
-           deleteOrganization } from 'app/api/'
+  import { getCurrentStaffEmail } from 'app/api/'
 
   export default {
     data: function () {
       return {
-        message: "STAFF OFFICE!",
         loading: true,
         error: false,
         current_email: '',
-        list: [],
-        organizationsList: [],
         logoImage
       }
     },
     components: {
-      staffNavbar,
-      dashboard,
-      organizationDashboard
+      staffNavbar
     },
     created() {
       getCurrentStaffEmail() 
         .then((response) => {
+          console.log(response)
           this.current_email = response.data['staff_email'];
-        })
-      getOrganizationsList()
-        .then((response) => {
-          this.organizationsList = response.data;
         })
         .catch((error) => {
           this.error = true;
@@ -56,44 +55,6 @@
         .finally(() => {
           this.loading = false;
         });
-    },
-    methods: {
-      postNewOrganization: function(organizationCredentials) {
-        postNewOrganization(organizationCredentials)
-          .then((response) => {
-            getOrganizationsList()
-              .then((response) => {
-                this.organizationsList = response.data;
-              })
-              .catch((error) => {
-                this.error = true;
-              })
-              .finally(() => {
-                this.loading = false;
-              });
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-      },
-      deleteOrganization: function(organization_id) {
-        deleteOrganization(organization_id)
-          .then((response) => {
-            getOrganizationsList()
-              .then((response) => {
-                this.organizationsList = response.data;
-              })
-              .catch((error) => {
-                this.error = true;
-              })
-              .finally(() => {
-                this.loading = false;
-              });
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-      }
     }
   }
 </script>
